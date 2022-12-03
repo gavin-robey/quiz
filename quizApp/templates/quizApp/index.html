@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,10 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="{% static 'quizApp/style.css' %}" type="text/css"/>
 </head>
 <body>
-	<p>bruh</p>
+    <p>bruh</p>
     <h1>Hello there</h1>
     <p>{{testText}}</p>
+    <div>I will be red if the stylesheet linked up</div>
 </body>
 </html>
