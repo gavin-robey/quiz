@@ -51,6 +51,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'quiz.urls'
+STATIC_URL = 'static/'
 
 TEMPLATES = [
     {
