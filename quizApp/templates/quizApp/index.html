@@ -1,11 +1,41 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    
 </head>
 <body>
+    
+    <div class="container">
+        <p>Categories</p>
+        <select id="categories">
+            <option value="all" id="all">All Categories</option>   
+            <option value="arts_and_literature" id="arts_and_literature">Art and Literature</option>
+            <option value="film_and_tv" id="film_and_tv">Film and TV</option>
+            <option value="food_and_drink" id="food_and_drink">Food and Drink</option>
+            <option value="general_knowledge" id="general_knowledge">General Knowledge</option>
+            <option value="geography" id="geography">Geography</option>
+            <option value="history" id="history">History</option>
+            <option value="music" id="music">Music</option>
+            <option value="science" id="science">Science</option>
+            <option value="society_and_culture" id="society_and_culture">Society and Culture</option>
+            <option value="sport_and_leisure" id="sport_and_leisure">Sport and Leisure</option>   
+        </select>
+
+        <p>Difficulty</p>
+        <select id="difficulty">
+            <option value="easy" id="easy">Easy</option>
+            <option value="medium" id="medium">Medium</option>
+            <option value="hard" id="hard">Hard</option>
+        </select>
+
+        <button id="begin"> Begin</button>
+    </div>
+    
+    <script src="{% static 'quizApp/index.js' %}"></script>
 </body>
 </html>
