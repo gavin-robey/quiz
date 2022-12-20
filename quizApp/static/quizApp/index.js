@@ -4,8 +4,9 @@ let category = document.getElementById('categories');
 let difficulty = document.getElementById('difficulty');
 let questionContainer = document.createElement('div');
 let answers = document.createElement('form');
+answers.setAttribute('class', "answerForm");
 let container = document.createElement('div');
-container.setAttribute('id', "container");
+container.setAttribute('class', "answerContainer");
 
 let triviaData = [];
 
@@ -44,28 +45,46 @@ function beginQuiz(index){
     correctAnswer.setAttribute('type', "radio");
     correctAnswer.setAttribute('value', data.correctAnswer);
     correctAnswer.setAttribute('name', "answer");
+    correctAnswer.setAttribute('id', "answer");
 
     let label = document.createElement('label');
-    label.setAttribute('for', data.correctAnswer);
+    label.setAttribute('for', "answer");
     label.textContent = data.correctAnswer;
 
-    answers.appendChild(correctAnswer);
-    answers.appendChild(label);
+    let option = document.createElement('div');
+    option.setAttribute("class", "option");
+    option.appendChild(correctAnswer);
+    option.appendChild(label);
 
+    let submit = document.createElement('button')
+    
+
+
+    answers.appendChild(option)
+
+    let count = 0;
     for(item of data.incorrectAnswers){
+        
         let incorrectAnswer = document.createElement('input');
         incorrectAnswer.setAttribute('type', "radio");
         incorrectAnswer.setAttribute('value', item);
         incorrectAnswer.setAttribute('name', "answer");
+        incorrectAnswer.setAttribute('id', "answer" + count);
 
         let label = document.createElement('label');
-        label.setAttribute('for', item);
+        label.setAttribute('for', "answer" + count);
         label.textContent = item;
 
-        answers.appendChild(incorrectAnswer);
-        answers.appendChild(label);
+        let option = document.createElement('div');
+        option.setAttribute("class", "option");
+        option.appendChild(incorrectAnswer);
+        option.appendChild(label);
+
+        answers.appendChild(option)
+        count++;
     }
 }
+
 container.appendChild(questionContainer);
 container.appendChild(answers);
 document.body.appendChild(container);
