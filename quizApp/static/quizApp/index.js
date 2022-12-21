@@ -1,21 +1,15 @@
-let test = document.createElement('h1');
 let begin = document.getElementById('begin');
 let category = document.getElementById('categories');
 let difficulty = document.getElementById('difficulty');
-let questionContainer = document.createElement('div');
-let answers = document.createElement('form');
-answers.setAttribute('class', "answerForm");
-let container = document.createElement('div');
-container.setAttribute('class', "answerContainer");
-
+let counter = 1;
 let triviaData = [];
 
 begin.addEventListener('click', () =>{
     if(category.value === "all"){
-        getQuizAPI(`https://the-trivia-api.com/api/questions?&limit=5&difficulty=${difficulty.value}`);
+        getQuizAPI(`https://the-trivia-api.com/api/questions?&limit=10&difficulty=${difficulty.value}`);        
     }
     else{
-        getQuizAPI(`https://the-trivia-api.com/api/questions?categories=${category.value}&limit=5&difficulty=${difficulty.value}`);
+        getQuizAPI(`https://the-trivia-api.com/api/questions?categories=${category.value}&limit=10&difficulty=${difficulty.value}`);
     }
 });
 
@@ -27,65 +21,42 @@ function getQuizAPI(url){
         for(question of json){
             triviaData.push(question);
         }
-        questionContainer.innerHTML = "";
-        answers.innerHTML = "";
         beginQuiz(0);
+        quizLoop();
     })
     .catch(error => console.log(error));
 }
 
-function beginQuiz(index){
-    let data = triviaData[index];
-
-    let question = document.createElement('h2');
-    question.textContent = data.question;
-    questionContainer.appendChild(question);
-
-    let correctAnswer = document.createElement('input');
-    correctAnswer.setAttribute('type', "radio");
-    correctAnswer.setAttribute('value', data.correctAnswer);
-    correctAnswer.setAttribute('name', "answer");
-    correctAnswer.setAttribute('id', "answer");
-
-    let label = document.createElement('label');
-    label.setAttribute('for', "answer");
-    label.textContent = data.correctAnswer;
-
-    let option = document.createElement('div');
-    option.setAttribute("class", "option");
-    option.appendChild(correctAnswer);
-    option.appendChild(label);
-
-    let submit = document.createElement('button')
-    
-
-
-    answers.appendChild(option)
-
-    let count = 0;
-    for(item of data.incorrectAnswers){
-        
-        let incorrectAnswer = document.createElement('input');
-        incorrectAnswer.setAttribute('type', "radio");
-        incorrectAnswer.setAttribute('value', item);
-        incorrectAnswer.setAttribute('name', "answer");
-        incorrectAnswer.setAttribute('id', "answer" + count);
-
-        let label = document.createElement('label');
-        label.setAttribute('for', "answer" + count);
-        label.textContent = item;
-
-        let option = document.createElement('div');
-        option.setAttribute("class", "option");
-        option.appendChild(incorrectAnswer);
-        option.appendChild(label);
-
-        answers.appendChild(option)
-        count++;
-    }
+function quizLoop(){
+    let nextButton = document.getElementById('button');
+    nextButton.addEventListener('click', () =>{
+        if(counter === 10){
+            refreshPage(); // change this later to redirect to the results page
+        }else if(counter === 9){
+            // return and give results of the quiz
+            console.log(counter);
+            beginQuiz(counter)
+            document.getElementById('button').textContent = "Results";
+            counter++;
+        }else{
+            console.log(counter);
+            beginQuiz(counter)
+            counter++;
+        }
+    });
 }
 
-container.appendChild(questionContainer);
-container.appendChild(answers);
-document.body.appendChild(container);
+function refreshPage(){
+    window.location.reload();
+} 
+
+function beginQuiz(index){
+    let data = triviaData[index];
+    document.getElementById('answerContainer').style.visibility='visible';
+    document.getElementById('question').textContent = data.question;
+    document.getElementById('option1').textContent = data.correctAnswer;
+    document.getElementById('option2').textContent = data.incorrectAnswers[0];
+    document.getElementById('option3').textContent = data.incorrectAnswers[1];
+    document.getElementById('option4').textContent = data.incorrectAnswers[2];
+}
 

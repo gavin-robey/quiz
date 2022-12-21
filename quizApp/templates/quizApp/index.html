@@ -37,6 +37,27 @@
         </select>
 
         <button id="begin"> Begin</button>
+
+        <div class="answerContainer" id="answerContainer" style="visibility: hidden;">
+            <h2 class="question" id="question">Question goes here</h2>
+            <form class="answerForm">
+                <div class="option" id="1">
+                    <p id="option1">Loading...</p>
+                </div>
+                <div class="option" id="2">
+                    <p id="option2">Loading...</p>
+                </div>
+                <div class="option" id="3">
+                    <p id="option3">Loading...</p>
+                </div>
+                <div class="option" id="4">
+                    <p id="option4">Loading...</p>
+                </div>
+            </form>
+            <div class="button">
+                <p id="button">Next</p>
+            </div>
+        </div>
     
     <script src="{% static 'quizApp/index.js' %}"></script>
 </body>
