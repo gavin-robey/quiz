@@ -20,4 +20,6 @@ from quizApp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
+    path('questions/',views.questionPage, name="questionPage"),
+    path('results/', views.resultsPage, name="resultsPage"),
 ]

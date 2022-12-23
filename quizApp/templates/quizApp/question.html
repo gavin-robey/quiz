@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'quizApp/style.css' %}" type="text/css"/>
+    <title>{{question}}</title>
+</head>
+<body>
+
+    <div class="answerContainer" id="answerContainer">
+        <h2 class="question" id="question">{{question}}</h2>
+        <form class="answerForm">
+            <p class="option" id="1" onclick="select(event)">{{answer1}}</p>
+            <p class="option" id="2" onclick="select(event)">{{answer2}}</p>
+            <p class="option" id="3" onclick="select(event)">{{answer3}}</p>
+            <p class="option" id="4" onclick="select(event)">{{answer4}}</p>
+        </form>
+        <div class="button">
+            <p id="button">Next</p>
+        </div>
+    </div>
+</body>
+</html>
