@@ -1,17 +1,16 @@
 from django.shortcuts import render
+from urllib import parse
+import json
 
 def index(request):
     return render(request, 'quizApp/index.html')
 
 def questionPage(request):
-    quiz = {
-        "question": "where is waldo",
-        "answer1": "behind the penis",
-        "answer2": "behind the tuba",
-        "answer3": "inside the clown car",
-        "answer4": "behind the beanie weenie",
-    }
-    return render(request, "quizApp/question.html", quiz)
+    dataUrl = request.GET.get('data')
+    dataUrl = dataUrl.replace("/", "")
+    data = json.loads(dataUrl)
+
+    return render(request, "quizApp/question.html", {"data": data[int(request.GET.get('index'))], "dataUrl": dataUrl, "currentIndex": int(request.GET.get('index'))})
 
 def resultsPage(request):
     return render(request, "quizApp/results.html")

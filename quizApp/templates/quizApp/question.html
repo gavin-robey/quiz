@@ -6,21 +6,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'quizApp/style.css' %}" type="text/css"/>
-    <title>{{question}}</title>
+    <title>{{data.question}}</title>
 </head>
 <body>
-
     <div class="answerContainer" id="answerContainer">
-        <h2 class="question" id="question">{{question}}</h2>
-        <form class="answerForm">
-            <p class="option" id="1" onclick="select(event)">{{answer1}}</p>
-            <p class="option" id="2" onclick="select(event)">{{answer2}}</p>
-            <p class="option" id="3" onclick="select(event)">{{answer3}}</p>
-            <p class="option" id="4" onclick="select(event)">{{answer4}}</p>
+        <h2 class="question" id="question">{{data.question}}</h2>
+        <!-- Figure out what the hell to do with the url -->
+        <!-- TODO: turn this into a post request -->
+        <form class="answerForm" action="{% url 'quiz:questionPage' index=1 data=dataUrl  %}" method="get">
+            <p class="option" id="1" onclick="select(event)">{{data.correctAnswer}}</p>
+            <p class="option" id="2" onclick="select(event)">{{data.incorrectAnswers.0}}</p>
+            <p class="option" id="3" onclick="select(event)">{{data.incorrectAnswers.1}}</p>
+            <p class="option" id="4" onclick="select(event)">{{data.incorrectAnswers.2}}</p>
+            <!-- <input type="submit" value="Post" style="width: 100px; height: 50px; padding: 20px"> -->
         </form>
-        <div class="button">
+        <!-- <div class="button">
             <p id="button">Next</p>
-        </div>
+        </div> -->
     </div>
 </body>
 </html>

@@ -10,19 +10,12 @@ let triviaData = [];
 
 // calls the quiz api with values selected from difficulty and category drop down menus
 begin.addEventListener('click', () =>{
-
-    console.log("penis");
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', "https://www.google.com/");
-    xhr.send();
-
-
-    // if(category.value === "all"){
-    //     getQuizAPI(`https://the-trivia-api.com/api/questions?&limit=10&difficulty=${difficulty.value}`);        
-    // }
-    // else{
-    //     getQuizAPI(`https://the-trivia-api.com/api/questions?categories=${category.value}&limit=10&difficulty=${difficulty.value}`);
-    // }
+    if(category.value === "all"){
+        getQuizAPI(`https://the-trivia-api.com/api/questions?&limit=10&difficulty=${difficulty.value}`);        
+    }
+    else{
+        getQuizAPI(`https://the-trivia-api.com/api/questions?categories=${category.value}&limit=10&difficulty=${difficulty.value}`);
+    }
 });
 
 // given a url, fetches api and puts this data in the triviaData array
@@ -35,8 +28,10 @@ function getQuizAPI(url){
         for(question of json){
             triviaData.push(question);
         }
-        beginQuiz(0);
-        quizLoop();
+        
+        // change this to a post request so that data is not in the url
+        var triviaDataJSON = encodeURIComponent(JSON.stringify(triviaData));
+        location.href=`/questions?index=0&data=${triviaDataJSON}/`;
     })
     .catch(error => console.log(error));
 }
