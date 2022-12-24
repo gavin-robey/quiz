@@ -12,16 +12,24 @@
     
     <div class="answerContainer" id="answerContainer">
         <h2 class="question" id="question">{{data.question}}</h2>
-        <form class="answerForm">
+        <!-- Figure out what the hell to do with the url -->
+        <!-- TODO: turn this into a post request -->
+
+        <!-- Now is posting... Button styling still needs a little tweaking. Didn't have a lot of time but couldnt let you do the whole project;) -->
+        <form action="{% url 'resultsPage'  %}" method="post" class="answerForm">
+            {% csrf_token %}
             <p class="option" id="1" onclick="select(event)">{{data.correctAnswer}}</p>
             <p class="option" id="2" onclick="select(event)">{{data.incorrectAnswers.0}}</p>
             <p class="option" id="3" onclick="select(event)">{{data.incorrectAnswers.1}}</p>
             <p class="option" id="4" onclick="select(event)">{{data.incorrectAnswers.2}}</p>
-            <!-- <input type="submit" value="Post" style="width: 100px; height: 50px; padding: 20px"> -->
+            <input class="button" type="submit" value="Submit" style="width: 100px; height: 50px; padding: 20px">
         </form>
-        <div class="button" id="button">
-            <p>Next</p>
-        </div>
+
+
+
+        <!-- <div class="button">
+            <p id="button">Next</p>
+        </div> -->
     </div>
     <script>
         var index = "{{currentIndex}}";
