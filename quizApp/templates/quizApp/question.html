@@ -13,7 +13,7 @@
         <h2 class="question" id="question">{{data.question}}</h2>
         <!-- Figure out what the hell to do with the url -->
         <!-- TODO: turn this into a post request -->
-        <form class="answerForm" action="{% url 'quiz:questionPage' index=1 data=dataUrl  %}" method="get">
+        <form class="answerForm">
             <p class="option" id="1" onclick="select(event)">{{data.correctAnswer}}</p>
             <p class="option" id="2" onclick="select(event)">{{data.incorrectAnswers.0}}</p>
             <p class="option" id="3" onclick="select(event)">{{data.incorrectAnswers.1}}</p>
