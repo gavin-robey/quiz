@@ -10,7 +10,13 @@ def questionPage(request):
     dataUrl = dataUrl.replace("/", "")
     data = json.loads(dataUrl)
 
-    return render(request, "quizApp/question.html", {"data": data[int(request.GET.get('index'))], "dataUrl": dataUrl, "currentIndex": int(request.GET.get('index'))})
+    triviaData = {
+        "data": data[int(request.GET.get('index'))],
+        "currentIndex": int(request.GET.get('index')),
+        "length" : len(data),
+    }
+    
+    return render(request, "quizApp/question.html", triviaData)
 
 def resultsPage(request):
     return render(request, "quizApp/results.html")

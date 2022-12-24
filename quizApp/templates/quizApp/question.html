@@ -9,10 +9,9 @@
     <title>{{data.question}}</title>
 </head>
 <body>
+    
     <div class="answerContainer" id="answerContainer">
         <h2 class="question" id="question">{{data.question}}</h2>
-        <!-- Figure out what the hell to do with the url -->
-        <!-- TODO: turn this into a post request -->
         <form class="answerForm">
             <p class="option" id="1" onclick="select(event)">{{data.correctAnswer}}</p>
             <p class="option" id="2" onclick="select(event)">{{data.incorrectAnswers.0}}</p>
@@ -20,9 +19,29 @@
             <p class="option" id="4" onclick="select(event)">{{data.incorrectAnswers.2}}</p>
             <!-- <input type="submit" value="Post" style="width: 100px; height: 50px; padding: 20px"> -->
         </form>
-        <!-- <div class="button">
-            <p id="button">Next</p>
-        </div> -->
+        <div class="button" id="button">
+            <p>Next</p>
+        </div>
     </div>
+    <script>
+        var index = "{{currentIndex}}";
+        var len = "{{length}}";
+        var dataUrl = window.location.href;
+        let button = document.getElementById('button');
+        button.addEventListener('click', () => {
+            index++;
+            if(index < (len - 1)){
+                var newUrl = dataUrl.substr(dataUrl.indexOf('&'), dataUrl.length - 1); 
+                location.href=`/questions?index=${index}${newUrl}`;
+            }else if(index === (len - 1)){
+                button.textContent = "Finish"
+                var newUrl = dataUrl.substr(dataUrl.indexOf('&'), dataUrl.length - 1); 
+                location.href=`/questions?index=${index}${newUrl}`;
+            }
+            else{ 
+                console.log("This is when we would go to the results page")
+            }
+        })
+    </script>
 </body>
 </html>
