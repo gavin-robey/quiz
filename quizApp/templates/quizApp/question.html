@@ -9,47 +9,106 @@
     <title>{{data.question}}</title>
 </head>
 <body>
-    
+    <p id="correct">0</p>
+    <p id="incorrect">0</p>
     <div class="answerContainer" id="answerContainer">
-        <h2 class="question" id="question">{{data.question}}</h2>
-        <!-- Figure out what the hell to do with the url -->
-        <!-- TODO: turn this into a post request -->
-
+        <h2 class="question" id="question">Loading...</h2>
+        
         <!-- Now is posting... Button styling still needs a little tweaking. Didn't have a lot of time but couldnt let you do the whole project;) -->
         <form action="{% url 'resultsPage'  %}" method="post" class="answerForm">
             {% csrf_token %}
-            <p class="option" id="1" onclick="select(event)">{{data.correctAnswer}}</p>
-            <p class="option" id="2" onclick="select(event)">{{data.incorrectAnswers.0}}</p>
-            <p class="option" id="3" onclick="select(event)">{{data.incorrectAnswers.1}}</p>
-            <p class="option" id="4" onclick="select(event)">{{data.incorrectAnswers.2}}</p>
-            <input class="button" type="submit" value="Submit" style="width: 100px; height: 50px; padding: 20px">
+            <p class="option" id="1" onclick="select(event)">Loading...</p>
+            <p class="option" id="2" onclick="select(event)">Loading...</p>
+            <p class="option" id="3" onclick="select(event)">Loading...</p>
+            <p class="option" id="4" onclick="select(event)">Loading...</p>
+            <!-- <input class="button" type="submit" value="Submit" style="width: 100px; height: 50px; padding: 20px" id="button"> -->
         </form>
 
-
-
-        <!-- <div class="button">
-            <p id="button">Next</p>
-        </div> -->
+        <div id="button">
+            <p>Next</p>
+        </div>
     </div>
     <script>
-        var index = "{{currentIndex}}";
-        var len = "{{length}}";
-        var dataUrl = window.location.href;
-        let button = document.getElementById('button');
-        button.addEventListener('click', () => {
-            index++;
-            if(index < (len - 1)){
-                var newUrl = dataUrl.substr(dataUrl.indexOf('&'), dataUrl.length - 1); 
-                location.href=`/questions?index=${index}${newUrl}`;
-            }else if(index === (len - 1)){
-                button.textContent = "Finish"
-                var newUrl = dataUrl.substr(dataUrl.indexOf('&'), dataUrl.length - 1); 
-                location.href=`/questions?index=${index}${newUrl}`;
+        let counter = 1; // starts at one because the initial page creation calls beginQuiz(0)
+        let correctCount = 0;
+        let incorrectCount = 0;
+        let selected;
+        let correctAnswer;
+        let triviaData = [];
+
+        if("{{category}}"=== "all"){
+            getQuizAPI(`https://the-trivia-api.com/api/questions?&limit=${"{{quizLength}}"}&difficulty=${"{{difficulty}}"}`);        
+        }
+        else{
+            getQuizAPI(`https://the-trivia-api.com/api/questions?categories=${"{{category}}"}&limit=10&difficulty=${"{{difficulty}}"}`);
+        }
+
+        // Keeps track of which option was selected
+        function select(event){
+            if(selected !== undefined){
+                document.getElementById(selected).style.backgroundColor = '#313445';
             }
-            else{ 
-                console.log("This is when we would go to the results page")
+            selected = event.target.id;
+            event.currentTarget.style.backgroundColor = "#4062F6";
+            console.log(selected);
+        }
+
+        // verifies if questions are correct and adds these values to a total 
+        function isCorrect(){
+            if(selected === undefined){
+                return;
             }
-        })
+            if(document.getElementById(selected).textContent === correctAnswer){
+                correctCount++;
+                document.getElementById('correct').textContent = correctCount;
+            }else{
+                incorrectCount++;
+                document.getElementById('incorrect').textContent = incorrectCount;
+            }
+        }
+
+        function getQuizAPI(url){
+            fetch(url)
+            .then(response => response.json())
+            .then(json => {
+                triviaData.length = 0;
+                for(question of json){
+                    triviaData.push(question);
+                }
+                beginQuiz(0);
+                quizLoop();
+            })
+            .catch(error => console.log(error));
+        }
+
+        // Each time next is clicked, 
+        function quizLoop(){
+            let nextButton = document.getElementById('button');
+            nextButton.addEventListener('click', () =>{
+                if(counter < (triviaData.length - 1)){
+                    isCorrect();
+                    beginQuiz(counter);
+                    counter++;    
+                }else if(counter === (triviaData.length - 1)){
+                    isCorrect();
+                    beginQuiz(counter);
+                    document.getElementById('button').textContent = "Results";
+                    counter++;
+                }else{
+                    console.log("went to the results page");
+                }
+            });
+        }
+
+        function beginQuiz(index){
+            let data = triviaData[index];
+            correctAnswer = data.correctAnswer;
+            document.getElementById('question').textContent = data.question;
+            document.getElementById('1').textContent = data.correctAnswer;
+            document.getElementById('2').textContent = data.incorrectAnswers[0];
+            document.getElementById('3').textContent = data.incorrectAnswers[1];
+            document.getElementById('4').textContent = data.incorrectAnswers[2];
+        }
     </script>
 </body>
 </html>

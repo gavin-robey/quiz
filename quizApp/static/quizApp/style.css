@@ -38,6 +38,12 @@
 	border-radius: 10px;
 }
 
+#button{
+	position: absolute;
+	margin-top: 500px;
+	background-color: #4062F6;
+}
+
 .option:hover{
 	background-color: #4062F6;
 }

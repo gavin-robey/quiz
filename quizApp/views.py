@@ -6,17 +6,13 @@ def index(request):
     return render(request, 'quizApp/index.html')
 
 def questionPage(request):
-    dataUrl = request.GET.get('data')
-    dataUrl = dataUrl.replace("/", "")
-    data = json.loads(dataUrl)
-
-    triviaData = {
-        "data": data[int(request.GET.get('index'))],
-        "currentIndex": int(request.GET.get('index')),
-        "length" : len(data),
+    data = request.POST
+    selection = {
+        "category": data.get('categories'),
+        "difficulty": data.get('difficulty'),
+        "quizLength": data.get('length'),
     }
-    
-    return render(request, "quizApp/question.html", triviaData)
+    return render(request, "quizApp/question.html", selection)
 
 def resultsPage(request):
     return render(request, "quizApp/results.html")

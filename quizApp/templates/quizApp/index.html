@@ -13,9 +13,10 @@
 </head>
 <body>
     
-    <div class="container">
+    <form action="{% url 'questionPage'  %}" method="post" class="container">
+        {% csrf_token %}
         <p>Categories</p>
-        <select id="categories">
+        <select id="categories" name="categories">
             <option value="all" id="all">All Categories</option>   
             <option value="arts_and_literature" id="arts_and_literature">Art and Literature</option>
             <option value="film_and_tv" id="film_and_tv">Film and TV</option>
@@ -30,14 +31,23 @@
         </select>
 
         <p>Difficulty</p>
-        <select id="difficulty">
+        <select id="difficulty" name="difficulty">
             <option value="easy" id="easy">Easy</option>
             <option value="medium" id="medium">Medium</option>
             <option value="hard" id="hard">Hard</option>
         </select>
 
-        <button id="begin"> Begin</button>
+        <p>Quiz Length</p>
+        <select id="length" name="length">
+            <option value="5" id="5">5</option>
+            <option value="7" id="7">7</option>
+            <option value="10" id="10">10</option>
+        </select>
+
+        <input class="button" type="submit" value="Submit" style="width: 100px; height: 50px; padding: 20px" id="begin">
+    </form>
+        
             
-    <script src="{% static 'quizApp/index.js' %}"></script>
+    <!-- <script src="{% static 'quizApp/index.js' %}"></script> -->
 </body>
 </html>
