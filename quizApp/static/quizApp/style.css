@@ -1,76 +1,138 @@
 .answerContainer{
 	text-align: center;
+	width: 50%;
+	height: 600px;
 	justify-content: center;
-	width: 700px;
-	height: 500px;
-	border-radius: 10px;
-	background-color: #272936;
-	color: white;
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%,-50%);
-	padding: 20px;
-	box-shadow: #272936;
+}
+
+.question{
+	margin-bottom: 50px;
 }
 
 .option{
+	box-shadow: 0 12px 24px -20px #000;
 	padding: 20px 0;
-	width: 75%;
 	height: 30px;
 	margin: auto;
 	margin-top: 25px;
-	background-color: #313445;
+	background-color: #434861;
 	border-radius: 10px;
-}
-
-.button{
-	font-size: large;
-	color: white;
-	text-align: center;
-	padding: 20px 0;
-	margin: auto;
-	margin-top: 30px;
-	background-color: #233eb5;
-	box-shadow: #fdfdfd;
-	width: 100px;
-	height: 100px;
-	border-radius: 10px;
-}
-
-#button{
-	position: absolute;
-	margin-top: 500px;
-	background-color: #4062F6;
 }
 
 .option:hover{
 	background-color: #4062F6;
 }
 
-.answerForm{
-	margin-top: 10%;
-	text-align: center;
-	justify-content: center;
-	width: 700px;
-	height: 500px;
+.box{
+	display: inline-block;
+	padding: 10px;
 	border-radius: 10px;
-	background-color: #272936;
-	color: white;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%,-50%);
-	padding: 20px;
-	box-shadow: #272936;
-	position: absolute;
-    background-color:#0a0a23;
+}
+
+.box:hover{
+	box-shadow: 0 12px 24px -20px #000;
+}
+
+#timer{
+	float: right;
+	margin-right: 50px;
+}
+
+#homeButton{
+	float: left;
+	box-shadow: 0 12px 24px -20px #000;
+}
+
+#homeButton:hover{
+	background-color: #4062F6;
+}
+
+#nextButton{
+	box-shadow: 0 12px 24px -20px #000;
+	float: right;
+}
+
+.button{
+	text-align: center;
+	padding: 5px;
+	width: 15%;
+	margin: auto;
+	margin-top: 25px;
+	background-color: #434861;
+	border-radius: 10px;
 }
 
 body{
+	color: rgb(220, 220, 220);
+	background-color: #313445;
 	font-family: 'Roboto', sans-serif;
 }
 
+circle {
+	box-shadow: 0 12px 24px -20px #000;
+	transition: all 1s linear;
+}
+
+#c1{
+	box-shadow: 0 12px 24px -20px #000;
+	transition: all 1s linear;
+	stroke: #434861;
+	stroke-width: 3;
+	stroke-linecap: round;
+	fill: transparent;
+}
+
+#c2 {
+	box-shadow: 0 12px 24px -20px #000;
+	transition: all 1s linear;
+	stroke: #4062F6;
+	stroke-width: 3;
+	stroke-linecap: round;
+	fill: transparent;
+}
+
+#counterText {
+	fill: rgb(220, 220, 220);
+	-webkit-animation: heartBeat 1s infinite;
+	animation: heartBeat 1s infinite;
+}
+
+#points{
+	fill: rgb(220, 220, 220);
+}
+
+.circular-chart {
+	display: block;
+	margin: 10px auto;
+	max-width: 200px;
+	max-height: 200px;
+}
+
+.circle {
+	stroke: #4CC790;
+	fill: none;
+	stroke-width: 3;
+	stroke-linecap: round;
+	animation: progress 1s ease-in backwards;
+}
+
+.circle2{
+	stroke: #434861;
+	fill: transparent;
+	stroke-width: 3;
+	stroke-linecap: round;
+	animation: progress 1s ease-in backwards;
+}
+
+@keyframes progress {
+	0% {
+		stroke-dasharray: 0 100;
+	}
+}
 
 
 

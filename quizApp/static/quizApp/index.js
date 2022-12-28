@@ -30,8 +30,8 @@ function getQuizAPI(url){
         }
         
         // // change this to a post request so that data is not in the url
-        // var triviaDataJSON = encodeURIComponent(JSON.stringify(triviaData));
-        // location.href=`/questions?index=0&data=${triviaDataJSON}/`;
+        var triviaDataJSON = encodeURIComponent(JSON.stringify(triviaData));
+        location.href=`/questions?index=0&data=${triviaDataJSON}/`;
     })
     .catch(error => console.log(error));
 }

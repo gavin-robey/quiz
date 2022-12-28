@@ -8,27 +8,52 @@
     <link rel="stylesheet" href="{% static 'quizApp/style.css' %}" type="text/css"/>
     <title>{{data.question}}</title>
 </head>
-<body>
+<body>  
+    <div class="box" id="timer">
+        <svg width="200px" height="200px" viewBox="0 0 42 42" class="donut">
+            <circle id="c1" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="100 0" stroke-dashoffset="100"></circle>
+            <circle id="c2" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
+            <g class="chart-text">
+                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="counterText">00</text>
+            </g>
+        </svg>
+    </div>
+
+    <div class="box" id="pointCounter">
+        <svg width="200px" height="200px" viewBox="0 0 42 42" class="donut">
+            <circle class="circle2" id="counterBackground" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="100, 100"/>
+            <circle class="circle" id="pointsCounter" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="0, 100"/>
+            <g class="chart-text">
+                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="points" font-size="smaller">0</text>
+            </g>
+        </svg>
+    </div>
+    
+
     <p id="correct">0</p>
     <p id="incorrect">0</p>
+    
+    
+    
     <div class="answerContainer" id="answerContainer">
-        <h2 class="question" id="question">Loading...</h2>
-        
-        <!-- Now is posting... Button styling still needs a little tweaking. Didn't have a lot of time but couldnt let you do the whole project;) -->
-        <form action="{% url 'resultsPage'  %}" method="post" class="answerForm">
-            {% csrf_token %}
-            <p class="option" id="1" onclick="select(event)">Loading...</p>
-            <p class="option" id="2" onclick="select(event)">Loading...</p>
-            <p class="option" id="3" onclick="select(event)">Loading...</p>
-            <p class="option" id="4" onclick="select(event)">Loading...</p>
-            <!-- <input class="button" type="submit" value="Submit" style="width: 100px; height: 50px; padding: 20px" id="button"> -->
-        </form>
-
-        <div id="button">
-            <p>Next</p>
+        <h2 id="question">Loading...</h2>
+        <p class="option" id="option1" onclick="select(event)">Loading...</p>
+        <p class="option" id="option2" onclick="select(event)">Loading...</p>
+        <p class="option" id="option3" onclick="select(event)">Loading...</p>
+        <p class="option" id="option4" onclick="select(event)">Loading...</p> 
+        <div id="homeButton" onclick="history.back()" class="button">
+            <p>Home</p>
+        </div>
+        <div id="nextButton" class="button">
+            <p id="nextButtonText">Next</p>
         </div>
     </div>
+    
+    
     <script>
+        let nextButton = document.getElementById('nextButton');
+        let homeButton = document.getElementById('homeButton');
+        let points = 0;
         let counter = 1; // starts at one because the initial page creation calls beginQuiz(0)
         let correctCount = 0;
         let incorrectCount = 0;
@@ -43,30 +68,6 @@
             getQuizAPI(`https://the-trivia-api.com/api/questions?categories=${"{{category}}"}&limit=10&difficulty=${"{{difficulty}}"}`);
         }
 
-        // Keeps track of which option was selected
-        function select(event){
-            if(selected !== undefined){
-                document.getElementById(selected).style.backgroundColor = '#313445';
-            }
-            selected = event.target.id;
-            event.currentTarget.style.backgroundColor = "#4062F6";
-            console.log(selected);
-        }
-
-        // verifies if questions are correct and adds these values to a total 
-        function isCorrect(){
-            if(selected === undefined){
-                return;
-            }
-            if(document.getElementById(selected).textContent === correctAnswer){
-                correctCount++;
-                document.getElementById('correct').textContent = correctCount;
-            }else{
-                incorrectCount++;
-                document.getElementById('incorrect').textContent = incorrectCount;
-            }
-        }
-
         function getQuizAPI(url){
             fetch(url)
             .then(response => response.json())
@@ -75,39 +76,113 @@
                 for(question of json){
                     triviaData.push(question);
                 }
-                beginQuiz(0);
+                startTimer("{{quizLength}}" * 3);
+                loadQuiz(0);
                 quizLoop();
             })
             .catch(error => console.log(error));
         }
 
+        function loadQuiz(index){
+            let data = triviaData[index];
+            correctAnswer = data.correctAnswer;
+            document.getElementById('question').textContent = data.question;
+            document.getElementById('option1').textContent = data.correctAnswer;
+            document.getElementById('option2').textContent = data.incorrectAnswers[0];
+            document.getElementById('option3').textContent = data.incorrectAnswers[1];
+            document.getElementById('option4').textContent = data.incorrectAnswers[2];
+        }
+
         // Each time next is clicked, 
         function quizLoop(){
-            let nextButton = document.getElementById('button');
             nextButton.addEventListener('click', () =>{
+                
+                document.getElementById(selected).style.backgroundColor = "#434861";
+                nextButton.style.backgroundColor = "#434861";
                 if(counter < (triviaData.length - 1)){
-                    isCorrect();
-                    beginQuiz(counter);
-                    counter++;    
+                    quizCounter();
                 }else if(counter === (triviaData.length - 1)){
-                    isCorrect();
-                    beginQuiz(counter);
-                    document.getElementById('button').textContent = "Results";
-                    counter++;
+                    quizCounter();
+                    document.getElementById('nextButtonText').textContent = "Results";
                 }else{
-                    console.log("went to the results page");
+                    // go to results page here
+                    isCorrect();
+                    alert("total correct amount: " + correctCount)
+                    // window.history.pushState("results","results/");
                 }
             });
         }
 
-        function beginQuiz(index){
-            let data = triviaData[index];
-            correctAnswer = data.correctAnswer;
-            document.getElementById('question').textContent = data.question;
-            document.getElementById('1').textContent = data.correctAnswer;
-            document.getElementById('2').textContent = data.incorrectAnswers[0];
-            document.getElementById('3').textContent = data.incorrectAnswers[1];
-            document.getElementById('4').textContent = data.incorrectAnswers[2];
+        function quizCounter(){
+            isCorrect();
+            count();
+            selected = undefined;
+            loadQuiz(counter);
+            counter++;   
+        }
+
+        // Keeps track of which answer was selected
+        function select(event){    
+            console.log("previously selected item: " + selected)
+            if(selected !== undefined){
+                document.getElementById(selected).style.backgroundColor = '#434861';
+            }
+            selected = event.target.id;
+            event.currentTarget.style.backgroundColor = "#4062F6";    
+            nextButton.style.backgroundColor = "#4062F6";
+        }
+
+        // verifies if questions are correct and adds these values to a total 
+        function isCorrect(){
+            if(selected === undefined){ return; }
+            if(document.getElementById(selected).textContent === correctAnswer){
+                correctCount++;
+                points += 100;
+                document.getElementById('points').textContent = points;
+                document.getElementById('correct').textContent = correctCount;
+            }else{
+                incorrectCount++;
+                points -= 50;
+                document.getElementById('points').textContent = points;
+                document.getElementById('incorrect').textContent = incorrectCount;
+            }
+        }
+
+        function startTimer(duration) {
+            var timeout = setTimeout(function () {
+                var time = duration;
+                var i = 1;
+                var k = ((i/duration) * 100);
+                var l = 100 - k;
+                i++;
+                document.getElementById("c1").style.strokeDasharray = [l,k];
+                document.getElementById("c2").style.strokeDasharray = [k,l];
+                document.getElementById("c1").style.strokeDashoffset = l;
+                document.getElementById("counterText").innerHTML = duration;
+                var interval = setInterval(function() {
+                    if (i > time) {
+                        clearInterval(interval);
+                        clearTimeout(timeout);
+                        return;
+                    }
+                    k = ((i/duration) * 100);
+                    l = 100 - k;
+                    document.getElementById("c1").style.strokeDasharray = [l,k];
+                    document.getElementById("c2").style.strokeDasharray = [k,l];
+                    document.getElementById("c1").style.strokeDashoffset = l;
+                    console.log(k, l);
+                    document.getElementById("counterText").innerHTML = (duration +1)-i;
+                    points -= (5 + incorrectCount);
+                    document.getElementById('points').textContent = points;
+                    i++;
+                    count();
+                }, 1000);
+            },0);
+        } 
+
+        function count(){
+            let percentage = (points / 1000) * 100;
+            document.getElementById('pointsCounter').style.strokeDasharray = [percentage, 100];
         }
     </script>
 </body>
