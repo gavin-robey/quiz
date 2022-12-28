@@ -9,32 +9,46 @@
     <title>{{data.question}}</title>
 </head>
 <body>  
-    <div class="box" id="timer">
-        <svg width="200px" height="200px" viewBox="0 0 42 42" class="donut">
-            <circle id="c1" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="100 0" stroke-dashoffset="100"></circle>
-            <circle id="c2" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
-            <g class="chart-text">
-                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="counterText">00</text>
-            </g>
-        </svg>
-    </div>
-
-    <div class="box" id="pointCounter">
-        <svg width="200px" height="200px" viewBox="0 0 42 42" class="donut">
-            <circle class="circle2" id="counterBackground" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="100, 100"/>
-            <circle class="circle" id="pointsCounter" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="0, 100"/>
-            <g class="chart-text">
-                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="points" font-size="smaller">0</text>
-            </g>
-        </svg>
+    <div id="progressBars">
+        <div class="box" id="timer">
+            <p>Time Remaining</p>
+            <svg width="200px" height="200px" viewBox="0 0 42 42" class="donut">
+                <circle id="c1" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="100 0" stroke-dashoffset="100"></circle>
+                <circle id="c2" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
+                <g class="chart-text">
+                    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="counterText" font-size="0.6em">00</text>
+                </g>
+            </svg>
+        </div>
+        <div class="box" id="pointCounter">
+            <p>Total Score</p>
+            <svg width="200px" height="200px" viewBox="0 0 42 42" class="donut">
+                <circle class="circle2" id="counterBackground" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="100, 100"/>
+                <circle class="circle" id="pointsCounter" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="0, 100"/>
+                <g class="chart-text">
+                    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="points" font-size="0.6em">0</text>
+                </g>
+            </svg>
+        </div>
+        <div class="box" id="accuracy">
+            <p>Accuracy</p>
+            <svg width="200px" height="200px" viewBox="0 0 42 42" class="donut">
+                <circle class="circle2" id="accuracyBackground" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="100, 100"/>
+                <circle class="circle" id="accuracyCounter" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="100, 100"/>
+                <g class="chart-text">
+                    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="accuracyText" font-size="0.6em">100%</text>
+                </g>
+            </svg>
+        </div>
     </div>
     
 
+    
+    
+    <!-- TODO: create good looking UI for these components -->
     <p id="correct">0</p>
     <p id="incorrect">0</p>
-    
-    
-    
+
     <div class="answerContainer" id="answerContainer">
         <h2 id="question">Loading...</h2>
         <p class="option" id="option1" onclick="select(event)">Loading...</p>
@@ -48,26 +62,29 @@
             <p id="nextButtonText">Next</p>
         </div>
     </div>
-    
-    
     <script>
         let nextButton = document.getElementById('nextButton');
         let homeButton = document.getElementById('homeButton');
+        let themeBlue = "#4062F6";
+        let themeGrey = '#434861';
         let points = 0;
-        let counter = 1; // starts at one because the initial page creation calls beginQuiz(0)
+        let counter = 1; // starts at one because the initial page creation calls loadQuiz(0)
         let correctCount = 0;
         let incorrectCount = 0;
-        let selected;
-        let correctAnswer;
-        let triviaData = [];
+        let selected; // selected represents the id of the selected answer
+        let correctAnswer; 
+        let triviaData = []; // array of objects from JSON
 
         if("{{category}}"=== "all"){
             getQuizAPI(`https://the-trivia-api.com/api/questions?&limit=${"{{quizLength}}"}&difficulty=${"{{difficulty}}"}`);        
         }
         else{
-            getQuizAPI(`https://the-trivia-api.com/api/questions?categories=${"{{category}}"}&limit=10&difficulty=${"{{difficulty}}"}`);
+            getQuizAPI(`https://the-trivia-api.com/api/questions?categories=${"{{category}}"}&limit=${"{{quizLength}}"}&difficulty=${"{{difficulty}}"}`);
         }
 
+        // fetches a given url
+        // parses JSON from url and adds it to the trivia data array
+        // start timer
         function getQuizAPI(url){
             fetch(url)
             .then(response => response.json())
@@ -83,6 +100,8 @@
             .catch(error => console.log(error));
         }
 
+        // given an index, the data from the triviaData array is used to update UI of the project
+        // The correct answer is stored in a global variable to be used elsewhere 
         function loadQuiz(index){
             let data = triviaData[index];
             correctAnswer = data.correctAnswer;
@@ -93,46 +112,56 @@
             document.getElementById('option4').textContent = data.incorrectAnswers[2];
         }
 
-        // Each time next is clicked, 
+        // Each time next is clicked, the next index of the triviaData array is parsed
+        // UI is updated accordingly
+        // If the last index is reached, then the next button becomes a 'results' button
+        // This sends JSON to the results page of all the results data
         function quizLoop(){
             nextButton.addEventListener('click', () =>{
-                
-                document.getElementById(selected).style.backgroundColor = "#434861";
-                nextButton.style.backgroundColor = "#434861";
+                document.getElementById(selected).style.backgroundColor = themeGrey;
+                nextButton.style.backgroundColor = themeGrey;
                 if(counter < (triviaData.length - 1)){
                     quizCounter();
                 }else if(counter === (triviaData.length - 1)){
                     quizCounter();
                     document.getElementById('nextButtonText').textContent = "Results";
                 }else{
-                    // go to results page here
+                    // TODO: go to the results page with the data of all the results passed in
                     isCorrect();
+                    count();
+                    accuracy();
                     alert("total correct amount: " + correctCount)
-                    // window.history.pushState("results","results/");
                 }
             });
         }
 
+        // Checks if the selected question is correct
+        // updates point count UI 
+        // Then loads the next quiz question and updates the main counter
         function quizCounter(){
             isCorrect();
             count();
+            accuracy();
             selected = undefined;
             loadQuiz(counter);
             counter++;   
         }
 
         // Keeps track of which answer was selected
-        function select(event){    
-            console.log("previously selected item: " + selected)
+        // If no answer was selected, then the current event target is set to the selected element
+        // Enables the next button to be used
+        function select(event){  
+            // If there was a previously selected element then it is deselected   
             if(selected !== undefined){
-                document.getElementById(selected).style.backgroundColor = '#434861';
+                document.getElementById(selected).style.backgroundColor = themeGrey;
             }
-            selected = event.target.id;
-            event.currentTarget.style.backgroundColor = "#4062F6";    
-            nextButton.style.backgroundColor = "#4062F6";
+            selected = event.target.id; // current event target is set as the selected element
+            event.currentTarget.style.backgroundColor = themeBlue;    
+            nextButton.style.backgroundColor = themeBlue;
         }
 
         // verifies if questions are correct and adds these values to a total 
+        // updates the point tally accordingly 
         function isCorrect(){
             if(selected === undefined){ return; }
             if(document.getElementById(selected).textContent === correctAnswer){
@@ -148,6 +177,9 @@
             }
         }
 
+        // runs timer given a start duration
+        // based on the time, a strokeDasharray is updated accordingly
+        // each second that passes, 5 points are deducted
         function startTimer(duration) {
             var timeout = setTimeout(function () {
                 var time = duration;
@@ -170,7 +202,6 @@
                     document.getElementById("c1").style.strokeDasharray = [l,k];
                     document.getElementById("c2").style.strokeDasharray = [k,l];
                     document.getElementById("c1").style.strokeDashoffset = l;
-                    console.log(k, l);
                     document.getElementById("counterText").innerHTML = (duration +1)-i;
                     points -= (5 + incorrectCount);
                     document.getElementById('points').textContent = points;
@@ -180,9 +211,18 @@
             },0);
         } 
 
+        // changes the points counter by taking the total points and dividing by the total points possible
+        // this updates the strokeDasharray
         function count(){
-            let percentage = (points / 1000) * 100;
+            let percentage = (points / ("{{quizLength}}" * 100)) * 100;
             document.getElementById('pointsCounter').style.strokeDasharray = [percentage, 100];
+        }
+
+        function accuracy(){
+            let total = correctCount + incorrectCount;
+            let percentage = (correctCount / total) * 100;
+            document.getElementById('accuracyCounter').style.strokeDasharray = [percentage, 100];
+            document.getElementById('accuracyText').textContent = `${Math.ceil(percentage)}%`;
         }
     </script>
 </body>

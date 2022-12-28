@@ -1,3 +1,9 @@
+body{
+	color: rgb(220, 220, 220);
+	background-color: #313445;
+	font-family: 'Roboto', sans-serif;
+}
+
 .answerContainer{
 	text-align: center;
 	width: 50%;
@@ -7,9 +13,7 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%,-50%);
-}
-
-.question{
+}.question{
 	margin-bottom: 50px;
 }
 
@@ -21,39 +25,24 @@
 	margin-top: 25px;
 	background-color: #434861;
 	border-radius: 10px;
-}
-
-.option:hover{
+}.option:hover{
 	background-color: #4062F6;
 }
 
 .box{
 	display: inline-block;
-	padding: 10px;
-	border-radius: 10px;
-}
-
-.box:hover{
+	border-radius: 1px;
+}.box:hover{
 	box-shadow: 0 12px 24px -20px #000;
 }
 
-#timer{
-	float: right;
-	margin-right: 50px;
-}
+
 
 #homeButton{
 	float: left;
 	box-shadow: 0 12px 24px -20px #000;
-}
-
-#homeButton:hover{
+}#homeButton:hover{
 	background-color: #4062F6;
-}
-
-#nextButton{
-	box-shadow: 0 12px 24px -20px #000;
-	float: right;
 }
 
 .button{
@@ -64,15 +53,12 @@
 	margin-top: 25px;
 	background-color: #434861;
 	border-radius: 10px;
+}#nextButton{
+	box-shadow: 0 12px 24px -20px #000;
+	float: right;
 }
 
-body{
-	color: rgb(220, 220, 220);
-	background-color: #313445;
-	font-family: 'Roboto', sans-serif;
-}
-
-circle {
+circle{
 	box-shadow: 0 12px 24px -20px #000;
 	transition: all 1s linear;
 }
@@ -84,18 +70,14 @@ circle {
 	stroke-width: 3;
 	stroke-linecap: round;
 	fill: transparent;
-}
-
-#c2 {
+}#c2 {
 	box-shadow: 0 12px 24px -20px #000;
 	transition: all 1s linear;
 	stroke: #4062F6;
 	stroke-width: 3;
 	stroke-linecap: round;
 	fill: transparent;
-}
-
-#counterText {
+}#counterText {
 	fill: rgb(220, 220, 220);
 	-webkit-animation: heartBeat 1s infinite;
 	animation: heartBeat 1s infinite;
@@ -103,35 +85,38 @@ circle {
 
 #points{
 	fill: rgb(220, 220, 220);
-}
-
-.circular-chart {
+}.circular-chart {
 	display: block;
 	margin: 10px auto;
 	max-width: 200px;
 	max-height: 200px;
-}
-
-.circle {
+}.circle {
 	stroke: #4CC790;
 	fill: none;
 	stroke-width: 3;
 	stroke-linecap: round;
 	animation: progress 1s ease-in backwards;
-}
-
-.circle2{
+}.circle2{
 	stroke: #434861;
 	fill: transparent;
 	stroke-width: 3;
 	stroke-linecap: round;
 	animation: progress 1s ease-in backwards;
-}
-
-@keyframes progress {
+}@keyframes progress {
 	0% {
 		stroke-dasharray: 0 100;
 	}
+}
+
+#accuracyText{
+	fill: rgb(220, 220, 220);
+}
+
+#progressBars{
+	float: right;
+	margin-top: 50px;
+	margin-right: 60px;
+	width: 200px;
 }
 
 
