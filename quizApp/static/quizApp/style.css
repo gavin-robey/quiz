@@ -121,3 +121,32 @@ circle{
 
 
 
+/*Braxtons css --subject to change */
+
+.section-heading {
+	text-align:center;
+	color:#102C4E;
+	margin-top: 150px;
+	margin-bottom:70px;
+	font-size: 35px;
+  }
+
+  .bigger-box {
+	float: left;
+	width: 82%;
+	padding: 10px;
+	margin:20px;
+	height: 100px;
+  }
+
+  .box {
+	float: left;
+	width: 12%;
+	padding: 10px;
+	margin:20px;
+	height: 100px;
+  }
+
+  .box-color {
+	background-color:#112d4e;
+  }

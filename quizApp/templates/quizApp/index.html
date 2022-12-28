@@ -15,7 +15,25 @@
     
     <form action="{% url 'questionPage'  %}" method="post" class="container">
         {% csrf_token %}
-        <p>Categories</p>
+
+        <p class="section-heading" id="categories" name="categories">Categories</p>
+
+        <div class="bigger-box box-color" value="all" id="all" onclick="select(event)">All Categories</div>
+            <div class="box box-color" value="arts_and_literature" id="arts_and_literature" onclick="select(event)">Arts and Literature</div>
+            <div class="box box-color" value="film_and_tv" id="film_and_tv" onclick="select(event)">Film and TV</div>
+            <div class="box box-color" value="food_and_drink" id="foodq_and_drink" onclick="select(event)">Food and Drink</div>
+            <div class="box box-color" value="general_knowledge" id="general_knowledge" onclick="select(event)">General Knowledge</div>
+            <div class="box box-color" value="geography" id="geography" onclick="select(event)">Geography</div>
+            <div class="box box-color" value="history" id="history" onclick="select(event)">Food and Drink</div>
+            <div class="box box-color" value="music" id="music" onclick="select(event)">Music</div>
+            <div class="box box-color" value="science" id="science" onclick="select(event)">Science</div>
+            <div class="box box-color" value="society_and_culture" id="society_and_culture" onclick="select(event)">Society and Culture</div>
+            <div class="box box-color" value="sport_and_leisure" id="sport_and_leisure" onclick="select(event)">Sport and Leisure</div>
+
+
+
+
+        <!-- <p>Categories</p>
         <select id="categories" name="categories">
             <option value="all" id="all">All Categories</option>   
             <option value="arts_and_literature" id="arts_and_literature">Art and Literature</option>
@@ -28,7 +46,7 @@
             <option value="science" id="science">Science</option>
             <option value="society_and_culture" id="society_and_culture">Society and Culture</option>
             <option value="sport_and_leisure" id="sport_and_leisure">Sport and Leisure</option>   
-        </select>
+        </select> -->
 
         <p>Difficulty</p>
         <select id="difficulty" name="difficulty">
@@ -44,10 +62,33 @@
             <option value="10" id="10">10</option>
         </select>
 
+        <div id="nextButton" class="button">
+            <p id="nextButtonText">Next</p>
+        </div>
         <input class="button" type="submit" value="Submit" style="width: 100px; height: 50px; padding: 20px" id="begin">
     </form>
         
-            
+    
+    <script>
+        let themeBlue = "#4062F6";
+        let themeGrey = '#434861';
+        let selected; // selected represents the id of the selected answer
+        let triviaData = [];
+
+
+        function select(event){  
+                    // If there was a previously selected element then it is deselected   
+                    if(selected !== undefined){
+                        document.getElementById(selected).style.backgroundColor = themeGrey;
+                    }
+                    selected = event.target.id; // current event target is set as the selected element
+                    event.currentTarget.style.backgroundColor = themeBlue;    
+                    nextButton.style.backgroundColor = themeBlue;
+                }
+
+
+
+    </script>
     <!-- <script src="{% static 'quizApp/index.js' %}"></script> -->
 </body>
 </html>
