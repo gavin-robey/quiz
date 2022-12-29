@@ -29,14 +29,11 @@ body{
 	background-color: #4062F6;
 }
 
-.box{
+.container{
 	display: inline-block;
+	text-align: center;
 	border-radius: 1px;
-}.box:hover{
-	box-shadow: 0 12px 24px -20px #000;
 }
-
-
 
 #homeButton{
 	float: left;
@@ -91,7 +88,7 @@ circle{
 	max-width: 200px;
 	max-height: 200px;
 }.circle {
-	stroke: #4CC790;
+	stroke: #7940F6;
 	fill: none;
 	stroke-width: 3;
 	stroke-linecap: round;
@@ -106,23 +103,108 @@ circle{
 	0% {
 		stroke-dasharray: 0 100;
 	}
+}#accuracyCounter{
+	stroke: #4CC790;
 }
 
 #accuracyText{
 	fill: rgb(220, 220, 220);
-}
-
-#progressBars{
+}#progressBars{
 	float: right;
-	margin-top: 50px;
+	margin-top: 5.33rem;
 	margin-right: 60px;
 	width: 200px;
+}#accuracyBars{
+	float: left;
+	text-align: center;
+	margin-top: 5.33rem;
+	margin-left: 60px;
+	width: 200px;
+}
+
+#correctCountChange{
+	visibility: hidden;
+	animation: none;
+	color: #4CC790;
+	position: absolute;
+	margin-top: 26.22rem;
+	margin-left: 14rem;
+}#correct{
+	animation: none;
+}#incorrectCountChange{
+	visibility: hidden;
+	animation: none;
+	color: #fa2c2c;
+	position: absolute;
+	margin-top: 32.5rem;
+	margin-left: 14rem;
+}#incorrect{
+	animation: none;
+}.score{
+	position: absolute;
+	margin-top: 37rem;
+	margin-left: 43.5%;
+}#increaseScore{
+	visibility: hidden;
+	color: #7940F6;
+	animation: none;
+}#decreaseScore{
+	visibility: hidden;
+	color: #fa2c2c;
+	animation: none;
+}
+
+@keyframes fade{
+	0%{
+    	opacity:0;
+	}
+	25%{
+    	opacity:1;
+	}
+  	100%{
+    	opacity:0;
+  	}
+}
+
+@keyframes toGreen{
+	0%{
+    	color: rgb(220, 220, 220);
+	}
+	25%{
+    	color: #4CC790;
+	}
+  	100%{
+    	color: rgb(220, 220, 220);
+  	}
+}
+
+@keyframes toRed{
+	0%{
+    	color: rgb(220, 220, 220);
+	}
+	25%{
+    	color: #fa2c2c;
+	}
+  	100%{
+    	color: rgb(220, 220, 220);
+  	}
+}
+
+@keyframes toPurple{
+	0%{
+    	color: rgb(220, 220, 220);
+	}
+	25%{
+    	color: #7940F6;
+	}
+  	100%{
+    	color: rgb(220, 220, 220);
+  	}
 }
 
 
 
 /*Braxtons css --subject to change */
-
 .section-heading {
 	text-align:center;
 	color:#102C4E;

@@ -10,8 +10,8 @@
 </head>
 <body>  
     <div id="progressBars">
-        <div class="box" id="timer">
-            <p>Time Remaining</p>
+        <div class="container" id="timer">
+            <h2>Time Remaining</h2>
             <svg width="200px" height="200px" viewBox="0 0 42 42" class="donut">
                 <circle id="c1" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="100 0" stroke-dashoffset="100"></circle>
                 <circle id="c2" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
@@ -20,8 +20,8 @@
                 </g>
             </svg>
         </div>
-        <div class="box" id="pointCounter">
-            <p>Total Score</p>
+        <div class="container" id="pointCounter">
+            <h2>Total Score</h2>
             <svg width="200px" height="200px" viewBox="0 0 42 42" class="donut">
                 <circle class="circle2" id="counterBackground" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="100, 100"/>
                 <circle class="circle" id="pointsCounter" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="0, 100"/>
@@ -30,8 +30,10 @@
                 </g>
             </svg>
         </div>
-        <div class="box" id="accuracy">
-            <p>Accuracy</p>
+    </div>
+    <div id="accuracyBars">
+        <div class="container" id="accuracy">
+            <h2>Accuracy</h2>
             <svg width="200px" height="200px" viewBox="0 0 42 42" class="donut">
                 <circle class="circle2" id="accuracyBackground" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="100, 100"/>
                 <circle class="circle" id="accuracyCounter" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="100, 100"/>
@@ -40,28 +42,31 @@
                 </g>
             </svg>
         </div>
+        <div class="container">
+            <h2>Correct</h2>
+            <h1 id="correct">0</h1>
+            <h2>Incorrect</h2>
+            <h1 id="incorrect">0</h1>
+        </div>
     </div>
-    
-
-    
-    
-    <!-- TODO: create good looking UI for these components -->
-    <p id="correct">0</p>
-    <p id="incorrect">0</p>
 
     <div class="answerContainer" id="answerContainer">
         <h2 id="question">Loading...</h2>
-        <p class="option" id="option1" onclick="select(event)">Loading...</p>
-        <p class="option" id="option2" onclick="select(event)">Loading...</p>
-        <p class="option" id="option3" onclick="select(event)">Loading...</p>
-        <p class="option" id="option4" onclick="select(event)">Loading...</p> 
+        <strong><p class="option" id="option1" onclick="select(event)">Loading...</p></strong>
+        <strong><p class="option" id="option3" onclick="select(event)">Loading...</p></strong>
+        <strong><p class="option" id="option2" onclick="select(event)">Loading...</p></strong>
+        <strong><p class="option" id="option4" onclick="select(event)">Loading...</p></strong>
         <div id="homeButton" onclick="history.back()" class="button">
-            <p>Home</p>
+            <strong><p>Home</p></strong>
         </div>
         <div id="nextButton" class="button">
-            <p id="nextButtonText">Next</p>
+            <strong><p id="nextButtonText">Next</p></strong>
         </div>
     </div>
+    <h1 id="correctCountChange">+1</h1>
+    <h1 id="incorrectCountChange">+1</h1>
+    <h1 id="increaseScore" class="score">+99 Points</h1>
+    <h1 id="decreaseScore" class="score">-49 Points</h1>
     <script>
         let nextButton = document.getElementById('nextButton');
         let homeButton = document.getElementById('homeButton');
@@ -166,15 +171,30 @@
             if(selected === undefined){ return; }
             if(document.getElementById(selected).textContent === correctAnswer){
                 correctCount++;
-                points += 100;
+                points += 99;
+                triggerPointDifference('correctCountChange', 'correct', 'toGreen');
                 document.getElementById('points').textContent = points;
                 document.getElementById('correct').textContent = correctCount;
             }else{
                 incorrectCount++;
-                points -= 50;
+                points -= 49;
+                triggerPointDifference('incorrectCountChange', "incorrect", 'toRed');
                 document.getElementById('points').textContent = points;
                 document.getElementById('incorrect').textContent = incorrectCount;
             }
+        }
+
+        function triggerPointDifference(id, textId, animationType){
+            let element = document.getElementById(id);
+            let count = document.getElementById(textId);
+            element.style.visibility = "visible";
+            element.style.animation="fade 2s infinite";
+            count.style.animation = `${animationType} 2s infinite`;
+            setTimeout(function (){
+                element.style.visibility = "hidden";
+                element.style.animation="none";
+                count.style.animation = "none";
+            },1200)
         }
 
         // runs timer given a start duration
