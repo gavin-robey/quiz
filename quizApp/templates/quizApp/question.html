@@ -9,6 +9,7 @@
     <title>{{data.question}}</title>
 </head>
 <body>  
+    <div id="navBar"><div id="questionNumberContainer"><h1 id="questionNumber">Question 1</h1></div></div>
     <div id="progressBars">
         <div class="container" id="timer">
             <h2>Time Remaining</h2>
@@ -65,14 +66,15 @@
     </div>
     <h1 id="correctCountChange">+1</h1>
     <h1 id="incorrectCountChange">+1</h1>
-    <h1 id="increaseScore" class="score">+99 Points</h1>
-    <h1 id="decreaseScore" class="score">-49 Points</h1>
+    <h1 id="increaseScore" class="score">+100 Points</h1>
+    <h1 id="decreaseScore" class="score">-50 Points</h1>
     <script>
         let nextButton = document.getElementById('nextButton');
         let homeButton = document.getElementById('homeButton');
         let themeBlue = "#4062F6";
         let themeGrey = '#434861';
         let points = 0;
+        let questionNumber = 1;
         let counter = 1; // starts at one because the initial page creation calls loadQuiz(0)
         let correctCount = 0;
         let incorrectCount = 0;
@@ -145,6 +147,7 @@
         // Then loads the next quiz question and updates the main counter
         function quizCounter(){
             isCorrect();
+            document.getElementById('questionNumber').textContent = `Question ${++questionNumber}`;
             count();
             accuracy();
             selected = undefined;
@@ -171,20 +174,22 @@
             if(selected === undefined){ return; }
             if(document.getElementById(selected).textContent === correctAnswer){
                 correctCount++;
-                points += 99;
-                triggerPointDifference('correctCountChange', 'correct', 'toGreen');
+                points += 100;
+                triggerDifference('correctCountChange', 'correct', 'toGreen');
+                triggerDifference('increaseScore', 'points', 'toPurple')
                 document.getElementById('points').textContent = points;
                 document.getElementById('correct').textContent = correctCount;
             }else{
                 incorrectCount++;
-                points -= 49;
-                triggerPointDifference('incorrectCountChange', "incorrect", 'toRed');
+                points -= 50;
+                triggerDifference('decreaseScore', 'points', 'toRedFill');
+                triggerDifference('incorrectCountChange', "incorrect", 'toRed');
                 document.getElementById('points').textContent = points;
                 document.getElementById('incorrect').textContent = incorrectCount;
             }
         }
 
-        function triggerPointDifference(id, textId, animationType){
+        function triggerDifference(id, textId, animationType){
             let element = document.getElementById(id);
             let count = document.getElementById(textId);
             element.style.visibility = "visible";
@@ -196,7 +201,6 @@
                 count.style.animation = "none";
             },1200)
         }
-
         // runs timer given a start duration
         // based on the time, a strokeDasharray is updated accordingly
         // each second that passes, 5 points are deducted

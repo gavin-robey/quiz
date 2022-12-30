@@ -1,7 +1,17 @@
 body{
+	margin: 0;
+	padding: 0;
 	color: rgb(220, 220, 220);
 	background-color: #313445;
 	font-family: 'Roboto', sans-serif;
+}
+
+#navBar{
+	padding: 10px;
+}#questionNumberContainer{
+	text-align: center;
+	width: 200px;
+	margin-left: 50px;
 }
 
 .answerContainer{
@@ -10,7 +20,7 @@ body{
 	height: 600px;
 	justify-content: center;
 	position: absolute;
-	top: 50%;
+	top: 55%;
 	left: 50%;
 	transform: translate(-50%,-50%);
 }.question{
@@ -111,13 +121,13 @@ circle{
 	fill: rgb(220, 220, 220);
 }#progressBars{
 	float: right;
-	margin-top: 5.33rem;
+	margin-top: 2.34rem;
 	margin-right: 60px;
 	width: 200px;
 }#accuracyBars{
 	float: left;
 	text-align: center;
-	margin-top: 5.33rem;
+	margin-top: 2.34rem;
 	margin-left: 60px;
 	width: 200px;
 }
@@ -127,7 +137,7 @@ circle{
 	animation: none;
 	color: #4CC790;
 	position: absolute;
-	margin-top: 26.22rem;
+	margin-top: 23.3rem;
 	margin-left: 14rem;
 }#correct{
 	animation: none;
@@ -136,14 +146,14 @@ circle{
 	animation: none;
 	color: #fa2c2c;
 	position: absolute;
-	margin-top: 32.5rem;
+	margin-top: 29.5rem;
 	margin-left: 14rem;
 }#incorrect{
 	animation: none;
 }.score{
 	position: absolute;
-	margin-top: 37rem;
-	margin-left: 43.5%;
+	margin-top: -4rem;
+	margin-left: 83.5%;
 }#increaseScore{
 	visibility: hidden;
 	color: #7940F6;
@@ -192,13 +202,25 @@ circle{
 
 @keyframes toPurple{
 	0%{
-    	color: rgb(220, 220, 220);
+    	fill: rgb(220, 220, 220);
 	}
 	25%{
-    	color: #7940F6;
+    	fill: #7940F6;
 	}
   	100%{
-    	color: rgb(220, 220, 220);
+    	fill: rgb(220, 220, 220);
+  	}
+}
+
+@keyframes toRedFill{
+	0%{
+    	fill: rgb(220, 220, 220);
+	}
+	25%{
+    	fill: #fa2c2c;
+	}
+  	100%{
+    	fill: rgb(220, 220, 220);
   	}
 }
 
