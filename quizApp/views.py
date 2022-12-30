@@ -15,4 +15,5 @@ def questionPage(request):
     return render(request, "quizApp/question.html", selection)
 
 def resultsPage(request):
-    return render(request, "quizApp/results.html")
+    data = request.GET['data'];
+    return render(request, "quizApp/results.html", {"data": data})

@@ -81,6 +81,12 @@
         let selected; // selected represents the id of the selected answer
         let correctAnswer; 
         let triviaData = []; // array of objects from JSON
+        const data = {
+            "correctQuestions": 0,
+            "incorrectQuestions": 0,
+            "points": 0,
+            
+        }
 
         if("{{category}}"=== "all"){
             getQuizAPI(`https://the-trivia-api.com/api/questions?&limit=${"{{quizLength}}"}&difficulty=${"{{difficulty}}"}`);        
@@ -137,8 +143,8 @@
                     isCorrect();
                     count();
                     accuracy();
-                    alert("total correct amount: " + correctCount)
-                }
+                    location.replace("results/?data=penis");
+                }t
             });
         }
 
