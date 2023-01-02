@@ -108,7 +108,6 @@ circle{
 	fill: transparent;
 	stroke-width: 3;
 	stroke-linecap: round;
-	animation: progress 1s ease-in backwards;
 }@keyframes progress {
 	0% {
 		stroke-dasharray: 0 100;
@@ -144,7 +143,7 @@ circle{
 }#incorrectCountChange{
 	visibility: hidden;
 	animation: none;
-	color: #fa2c2c;
+	color: #F24242;
 	position: absolute;
 	margin-top: 29.5rem;
 	margin-left: 14rem;
@@ -160,7 +159,7 @@ circle{
 	animation: none;
 }#decreaseScore{
 	visibility: hidden;
-	color: #fa2c2c;
+	color: #F24242;
 	animation: none;
 }
 
@@ -193,7 +192,7 @@ circle{
     	color: rgb(220, 220, 220);
 	}
 	25%{
-    	color: #fa2c2c;
+    	color: #F24242;
 	}
   	100%{
     	color: rgb(220, 220, 220);
@@ -217,7 +216,7 @@ circle{
     	fill: rgb(220, 220, 220);
 	}
 	25%{
-    	fill: #fa2c2c;
+    	fill: #F24242;
 	}
   	100%{
     	fill: rgb(220, 220, 220);

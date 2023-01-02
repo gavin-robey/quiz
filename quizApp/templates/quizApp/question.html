@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'quizApp/style.css' %}" type="text/css"/>
-    <title>{{data.question}}</title>
+    <title>Question 1</title>
 </head>
 <body>  
     <div id="navBar"><div id="questionNumberContainer"><h1 id="questionNumber">Question 1</h1></div></div>
@@ -37,9 +37,9 @@
             <h2>Accuracy</h2>
             <svg width="200px" height="200px" viewBox="0 0 42 42" class="donut">
                 <circle class="circle2" id="accuracyBackground" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="100, 100"/>
-                <circle class="circle" id="accuracyCounter" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="100, 100"/>
+                <circle class="circle" id="accuracyCounter" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="0, 100"/>
                 <g class="chart-text">
-                    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="accuracyText" font-size="0.6em">100%</text>
+                    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="accuracyText" font-size="0.6em">0%</text>
                 </g>
             </svg>
         </div>
@@ -69,24 +69,22 @@
     <h1 id="increaseScore" class="score">+100 Points</h1>
     <h1 id="decreaseScore" class="score">-50 Points</h1>
     <script>
-        let nextButton = document.getElementById('nextButton');
-        let homeButton = document.getElementById('homeButton');
-        let themeBlue = "#4062F6";
-        let themeGrey = '#434861';
+        const nextButton = document.getElementById('nextButton');
+        const homeButton = document.getElementById('homeButton');
+        const themeBlue = "#4062F6";
+        const themeGrey = '#434861';
+        const triviaData = []; // array of objects from JSON
         let points = 0;
+        let timeTaken = 0;
+        let duration = "{{quizLength}}" * 3;
         let questionNumber = 1;
         let counter = 1; // starts at one because the initial page creation calls loadQuiz(0)
         let correctCount = 0;
         let incorrectCount = 0;
         let selected; // selected represents the id of the selected answer
         let correctAnswer; 
-        let triviaData = []; // array of objects from JSON
-        const data = {
-            "correctQuestions": 0,
-            "incorrectQuestions": 0,
-            "points": 0,
-            
-        }
+        let userAnswers = [];
+        
 
         if("{{category}}"=== "all"){
             getQuizAPI(`https://the-trivia-api.com/api/questions?&limit=${"{{quizLength}}"}&difficulty=${"{{difficulty}}"}`);        
@@ -106,7 +104,7 @@
                 for(question of json){
                     triviaData.push(question);
                 }
-                startTimer("{{quizLength}}" * 3);
+                startTimer(duration);
                 loadQuiz(0);
                 quizLoop();
             })
@@ -125,6 +123,14 @@
             document.getElementById('option4').textContent = data.incorrectAnswers[2];
         }
 
+        function allCorrectAnswers(){
+            const allCorrectAnswers = [];
+            for(object of triviaData){
+                allCorrectAnswers.push({"question": object.question, "correctAnswer": object.correctAnswer, "incorrectAnswers": object.incorrectAnswers})
+            }
+            return allCorrectAnswers;
+        }
+
         // Each time next is clicked, the next index of the triviaData array is parsed
         // UI is updated accordingly
         // If the last index is reached, then the next button becomes a 'results' button
@@ -139,11 +145,8 @@
                     quizCounter();
                     document.getElementById('nextButtonText').textContent = "Results";
                 }else{
-                    // TODO: go to the results page with the data of all the results passed in
-                    isCorrect();
-                    count();
-                    accuracy();
-                    location.replace("results/?data=penis");
+                    setAnswer(true);
+                    sendResults();
                 }t
             });
         }
@@ -154,11 +157,42 @@
         function quizCounter(){
             isCorrect();
             document.getElementById('questionNumber').textContent = `Question ${++questionNumber}`;
+            document.getElementsByTagName('title').textContent = `Question ${questionNumber}`;
             count();
             accuracy();
-            selected = undefined;
+            setAnswer(false);
             loadQuiz(counter);
             counter++;   
+        }
+
+        function setAnswer(isLastQuestion){
+            if(selected != undefined){
+                userAnswers.push(document.getElementById(selected).textContent)
+            }
+            if(!isLastQuestion){
+                selected = undefined;
+            }
+        }
+
+        function sendResults(){
+            isCorrect();
+            count();
+            accuracy();
+            let results = {
+                "correctQuestions": correctCount,
+                "incorrectQuestions": incorrectCount,
+                "points": points,
+                "accuracy": (correctCount / (correctCount + incorrectCount)) * 100,
+                "timeTaken": timeTaken,
+                "questionsRemaining": ("{{quizLength}}" - questionNumber) + 1,
+                "correctAnswers": allCorrectAnswers(),
+                "quizLength": "{{quizLength}}",
+                "totalTime": duration,
+                "totalAnswered": correctCount + incorrectCount,
+                "userAnswers": userAnswers,
+            }
+            var resultsJSON = encodeURIComponent(JSON.stringify(results));
+            location.replace(`results/?resultsData=${resultsJSON}`);
         }
 
         // Keeps track of which answer was selected
@@ -220,7 +254,7 @@
                 document.getElementById("c1").style.strokeDasharray = [l,k];
                 document.getElementById("c2").style.strokeDasharray = [k,l];
                 document.getElementById("c1").style.strokeDashoffset = l;
-                document.getElementById("counterText").innerHTML = duration;
+                document.getElementById("counterText").innerHTML = duration - 1;
                 var interval = setInterval(function() {
                     if (i > time) {
                         clearInterval(interval);
@@ -232,7 +266,11 @@
                     document.getElementById("c1").style.strokeDasharray = [l,k];
                     document.getElementById("c2").style.strokeDasharray = [k,l];
                     document.getElementById("c1").style.strokeDashoffset = l;
-                    document.getElementById("counterText").innerHTML = (duration +1)-i;
+                    document.getElementById("counterText").innerHTML = ((duration +1)-i) -1;
+                    timeTaken = i;
+                    if(i === duration){
+                        sendResults();
+                    }
                     points -= (5 + incorrectCount);
                     document.getElementById('points').textContent = points;
                     i++;
@@ -250,7 +288,7 @@
 
         function accuracy(){
             let total = correctCount + incorrectCount;
-            let percentage = (correctCount / total) * 100;
+            var percentage = (correctCount / total) * 100;
             document.getElementById('accuracyCounter').style.strokeDasharray = [percentage, 100];
             document.getElementById('accuracyText').textContent = `${Math.ceil(percentage)}%`;
         }

@@ -1,12 +1,218 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'quizApp/results.css' %}" type="text/css"/>
+    <title>Results</title>
 </head>
 <body>
-    <h1>{{data}}</h1>
+    <div id="statsSection">
+        <div class="section">
+            <div class="container" id="pointCounter">
+                <h2>Total Score</h2>
+                <svg width="200px" height="200px" viewBox="0 0 42 42" class="donut">
+                    <circle class="circle2" id="counterBackground" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="100, 100"/>
+                    <circle class="circle" id="pointsCounter" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="0, 100"/>
+                    <g class="chart-text">
+                        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="points" font-size="0.6em">0</text>
+                    </g>
+                </svg>
+            </div>
+            <div class="container" id="accuracy">
+                <h2>Accuracy</h2>
+                <svg width="200px" height="200px" viewBox="0 0 42 42" class="donut">
+                    <circle class="circle2" id="accuracyBackground" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="100, 100"/>
+                    <circle class="circle" id="accuracyCounter" cx="21" cy="21" r="15.91549430918954" stroke-dasharray="0, 100"/>
+                    <g class="chart-text">
+                        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="accuracyText" font-size="0.6em">0%</text>
+                    </g>
+                </svg>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container" id="correctAmount">
+                <h2>Correct Questions</h2>
+                <svg width="200px" height="100px" viewBox="0 0 42 21" class="test">
+                    <rect x="0" y="50%" width="100%" height="3" class="bar2" rx="1.5"></rect>
+                    <rect x="0" y="50%" width="5%" height="3" class="bar" rx="1.5" id="correctBar"></rect>
+                    <g class="chart-text">
+                        <text x="50%" y="15%" dominant-baseline="middle" text-anchor="middle" id="accuracyText" font-size="0.4em">{{results.correctQuestions}} / {{results.quizLength}}</text>
+                    </g>
+                    
+                </svg>
+            </div>
+        
+            <div class="container" id="incorrectAmount">
+                <h2>Incorrect Questions</h2>
+                <svg width="200px" height="100px" viewBox="0 0 42 21" class="test">
+                    
+                    <rect x="0" y="50%" width="100%" height="3" class="bar2" rx="1.5"></rect>
+                    <rect x="0" y="50%" width="5%" height="3" class="bar" rx="1.5" id="incorrectBar"></rect>
+                    <g class="chart-text">
+                        <text x="50%" y="15%" dominant-baseline="middle" text-anchor="middle" id="accuracyText" font-size="0.4em">{{results.incorrectQuestions}} / {{results.quizLength}}</text>
+                    </g>
+                    
+                </svg>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="container" id="timeTaken">
+                <h2>Time Spent</h2>
+                <svg width="200px" height="100px" viewBox="0 0 42 21" class="test">
+                    <rect x="0" y="50%" width="100%" height="3" class="bar2" rx="1.5"></rect>
+                    <rect x="0" y="50%" width="5%" height="3" class="bar" rx="1.5" id="timeBar"></rect>
+                    <g class="chart-text">
+                        <text x="50%" y="15%" dominant-baseline="middle" text-anchor="middle" id="accuracyText" font-size="0.4em">{{results.timeTaken}} Seconds</text>
+                    </g>
+                    
+                </svg>
+            </div>
+        
+            <div class="container" id="questionsAnswered">
+                <h2>Total Questions Answered</h2>
+                <svg width="200px" height="100px" viewBox="0 0 42 21" class="test">
+                    
+                    <rect x="0" y="50%" width="100%" height="3" class="bar2" rx="1.5"></rect>
+                    <rect x="0" y="50%" width="5%" height="3" class="bar" rx="1.5" id="questionsBar"></rect>
+                    <g class="chart-text">
+                        <text x="50%" y="15%" dominant-baseline="middle" text-anchor="middle" id="accuracyText" font-size="0.4em">{{results.totalAnswered}} / {{results.quizLength}}</text>
+                    </g>
+                    
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <div class="answerContainer" id="answerContainer">
+        <h2 id="question">loading...</h2>
+        <p class="option" id="option1" style="border:5px solid #4CC790; box-shadow: 0 12px 24px -20px #000;">Loading...</p>
+        <p class="option" id="option3" style="width: 95%; color: #b7b7b7;">Loading...</p>
+        <p class="option" id="option2" style="width: 95%; color: #b7b7b7;"" >Loading...</p>
+        <p class="option" id="option4" style="width: 95%; color: #b7b7b7;"">Loading...</p>
+        <div id="homeButton" onclick="history.back()" class="button">
+            <p>Home</p>
+        </div>
+        <div id="nextButton" class="button" style="visibility: visible;">
+            <p id="nextButtonText">Next</p>
+        </div>
+        <div id="previousButton" class="button" style="visibility: hidden;">
+            <p>Previous</p>
+        </div>
+    </div>
+    
+    <!-- <h1>Correct answers: {{results.correctAnswers}}</h1> -->
+    <script>
+        let incorrectPercentage = ("{{results.incorrectQuestions}}" / "{{results.quizLength}}") * 100;
+        let correctPercentage = ("{{results.correctQuestions}}" / "{{results.quizLength}}") * 100;
+        let timePercentage = ("{{results.timeTaken}}" / "{{results.totalTime}}") * 100;
+        let totalPercentage = ("{{results.totalAnswered}}" / "{{results.quizLength}}") * 100;
+        let resultsArray = "{{results.correctAnswers}}";
+        let userAnswers = "{{results.userAnswers}}";
+        let quizCount = 0;
+
+
+        function barAnimation(percentage, element){
+            let pos = 0;
+            let animateBar = setInterval(function(){
+                if(pos == parseInt(percentage)){
+                    clearInterval(animateBar);
+                    return;
+                }
+                pos++;
+                element.style.width = `${pos}%`;
+            }, 20);
+        }
+        
+        function loopAnimation(barId, textId, percentage, text){
+            document.getElementById(barId).style.strokeDasharray = [percentage, 100];
+            document.getElementById(textId).textContent = text;
+        }
+
+        document.getElementById('nextButton').addEventListener('click', ()=>{
+            quizCount++;
+            loadQuiz(quizCount);
+        })
+
+        document.getElementById('previousButton').addEventListener('click', ()=>{
+            quizCount--;
+            loadQuiz(quizCount);
+        })
+
+
+        function loadQuiz(index){
+            let data = resultsArray[index];
+            document.getElementById('question').textContent = data.question;
+            document.getElementById('option1').textContent = data.correctAnswer;
+            document.getElementById('option2').textContent = data.incorrectAnswers[0];
+            document.getElementById('option3').textContent = data.incorrectAnswers[1];
+            document.getElementById('option4').textContent = data.incorrectAnswers[2];
+            findWrongAnswer(data, userAnswers[index])
+            if(index >= 1){
+                document.getElementById('previousButton').style.visibility = "visible";
+            }else{
+                document.getElementById('previousButton').style.visibility = "hidden";
+            }
+            if(index === resultsArray.length - 1){
+                document.getElementById('nextButton').style.visibility = "hidden";
+                document.getElementById('nextButton').style.float = "left";
+            }else{
+                document.getElementById('nextButton').style.visibility = "visible";
+                document.getElementById('nextButton').style.float = "right";
+            }
+        }
+
+        function loadResults(){
+            resultsArray = parseArray(resultsArray);
+            userAnswers = parseArray(userAnswers);
+        }
+
+        function parseArray(array){
+            array = array.replace(/&#x27;/g,"\"");
+            array = array.replace(/&amp;/g,"\&");
+            array = array.replace(/&quot;/g,"\'");
+            array = JSON.parse(array);
+            return array;
+        }
+
+        function findWrongAnswer(data, userAnswer){
+            var allElements = document.getElementById("answerContainer").getElementsByClassName('option');
+            for(htmlElement of allElements){
+                if(htmlElement.textContent === userAnswer){
+                    setAnswerOutline(htmlElement, "5px solid #F24242", "99%", "0px 12px 24px -20px #000", "rgb(220, 220, 220)");
+                }else{
+                    setAnswerOutline(htmlElement, "none", "95%", "none", "#b7b7b7");
+                }
+
+                if(htmlElement.textContent === data.correctAnswer){
+                    setAnswerOutline(htmlElement, "5px solid #4CC790", "99%", "0px 12px 24px -20px #000", "rgb(220, 220, 220)");
+                }
+            }
+        }
+
+        function setAnswerOutline(htmlElement, border, width, boxShadow, color){
+            htmlElement.style.border = border;
+            htmlElement.style.width = width;
+            htmlElement.style.boxShadow = boxShadow;
+            htmlElement.style.color = color;
+        }
+
+
+        let percentage = ("{{results.points}}" / ("{{results.quizLength}}" * 100)) * 100;
+        loopAnimation('pointsCounter', 'points', percentage, "{{results.points}}");
+        loopAnimation('accuracyCounter', 'accuracyText', "{{results.accuracy}}", `${Math.ceil("{{results.accuracy}}")}%`);
+
+        barAnimation(correctPercentage, document.getElementById('correctBar'));
+        barAnimation(incorrectPercentage, document.getElementById('incorrectBar'));
+        barAnimation(timePercentage, document.getElementById('timeBar'));
+        barAnimation(totalPercentage, document.getElementById('questionsBar'));
+
+        loadResults();
+        loadQuiz(0);
+    </script>
 </body>
 </html>

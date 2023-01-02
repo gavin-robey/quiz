@@ -15,5 +15,8 @@ def questionPage(request):
     return render(request, "quizApp/question.html", selection)
 
 def resultsPage(request):
-    data = request.GET['data'];
-    return render(request, "quizApp/results.html", {"data": data})
+    resultsUrl = request.GET.get('resultsData')
+    resultsUrl = resultsUrl.replace("/", "")
+    results = json.loads(resultsUrl)
+
+    return render(request, "quizApp/results.html", {"results": results})
