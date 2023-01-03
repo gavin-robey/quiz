@@ -19,4 +19,7 @@ def resultsPage(request):
     resultsUrl = resultsUrl.replace("/", "")
     results = json.loads(resultsUrl)
 
-    return render(request, "quizApp/results.html", {"results": results})
+    rawUrl = fr"{resultsUrl}"
+    rawUrl = rawUrl.replace(r'\"', "'")
+
+    return render(request, "quizApp/results.html", {"results": results, "resultsString": rawUrl})

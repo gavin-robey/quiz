@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'quizApp/results.css' %}" type="text/css"/>
+    <link rel="stylesheet" href="{% static 'quizApp/CSS/results.css' %}" type="text/css"/>
     <title>Results</title>
 </head>
 <body>
@@ -104,115 +104,19 @@
             <p>Previous</p>
         </div>
     </div>
-    
-    <!-- <h1>Correct answers: {{results.correctAnswers}}</h1> -->
+
+    <script src="{% static 'quizApp/ResultsJS/parseArray.js' %}"></script>
     <script>
         let incorrectPercentage = ("{{results.incorrectQuestions}}" / "{{results.quizLength}}") * 100;
         let correctPercentage = ("{{results.correctQuestions}}" / "{{results.quizLength}}") * 100;
         let timePercentage = ("{{results.timeTaken}}" / "{{results.totalTime}}") * 100;
         let totalPercentage = ("{{results.totalAnswered}}" / "{{results.quizLength}}") * 100;
-        let resultsArray = "{{results.correctAnswers}}";
-        let userAnswers = "{{results.userAnswers}}";
-        let quizCount = 0;
-
-
-        function barAnimation(percentage, element){
-            let pos = 0;
-            let animateBar = setInterval(function(){
-                if(pos == parseInt(percentage)){
-                    clearInterval(animateBar);
-                    return;
-                }
-                pos++;
-                element.style.width = `${pos}%`;
-            }, 20);
-        }
-        
-        function loopAnimation(barId, textId, percentage, text){
-            document.getElementById(barId).style.strokeDasharray = [percentage, 100];
-            document.getElementById(textId).textContent = text;
-        }
-
-        document.getElementById('nextButton').addEventListener('click', ()=>{
-            quizCount++;
-            loadQuiz(quizCount);
-        })
-
-        document.getElementById('previousButton').addEventListener('click', ()=>{
-            quizCount--;
-            loadQuiz(quizCount);
-        })
-
-
-        function loadQuiz(index){
-            let data = resultsArray[index];
-            document.getElementById('question').textContent = data.question;
-            document.getElementById('option1').textContent = data.correctAnswer;
-            document.getElementById('option2').textContent = data.incorrectAnswers[0];
-            document.getElementById('option3').textContent = data.incorrectAnswers[1];
-            document.getElementById('option4').textContent = data.incorrectAnswers[2];
-            findWrongAnswer(data, userAnswers[index])
-            if(index >= 1){
-                document.getElementById('previousButton').style.visibility = "visible";
-            }else{
-                document.getElementById('previousButton').style.visibility = "hidden";
-            }
-            if(index === resultsArray.length - 1){
-                document.getElementById('nextButton').style.visibility = "hidden";
-                document.getElementById('nextButton').style.float = "left";
-            }else{
-                document.getElementById('nextButton').style.visibility = "visible";
-                document.getElementById('nextButton').style.float = "right";
-            }
-        }
-
-        function loadResults(){
-            resultsArray = parseArray(resultsArray);
-            userAnswers = parseArray(userAnswers);
-        }
-
-        function parseArray(array){
-            array = array.replace(/&#x27;/g,"\"");
-            array = array.replace(/&amp;/g,"\&");
-            array = array.replace(/&quot;/g,"\'");
-            array = JSON.parse(array);
-            return array;
-        }
-
-        function findWrongAnswer(data, userAnswer){
-            var allElements = document.getElementById("answerContainer").getElementsByClassName('option');
-            for(htmlElement of allElements){
-                if(htmlElement.textContent === userAnswer){
-                    setAnswerOutline(htmlElement, "5px solid #F24242", "99%", "0px 12px 24px -20px #000", "rgb(220, 220, 220)");
-                }else{
-                    setAnswerOutline(htmlElement, "none", "95%", "none", "#b7b7b7");
-                }
-
-                if(htmlElement.textContent === data.correctAnswer){
-                    setAnswerOutline(htmlElement, "5px solid #4CC790", "99%", "0px 12px 24px -20px #000", "rgb(220, 220, 220)");
-                }
-            }
-        }
-
-        function setAnswerOutline(htmlElement, border, width, boxShadow, color){
-            htmlElement.style.border = border;
-            htmlElement.style.width = width;
-            htmlElement.style.boxShadow = boxShadow;
-            htmlElement.style.color = color;
-        }
-
-
-        let percentage = ("{{results.points}}" / ("{{results.quizLength}}" * 100)) * 100;
-        loopAnimation('pointsCounter', 'points', percentage, "{{results.points}}");
-        loopAnimation('accuracyCounter', 'accuracyText', "{{results.accuracy}}", `${Math.ceil("{{results.accuracy}}")}%`);
-
-        barAnimation(correctPercentage, document.getElementById('correctBar'));
-        barAnimation(incorrectPercentage, document.getElementById('incorrectBar'));
-        barAnimation(timePercentage, document.getElementById('timeBar'));
-        barAnimation(totalPercentage, document.getElementById('questionsBar'));
-
-        loadResults();
-        loadQuiz(0);
+        let rawResultData = parseArray("{{resultsString}}");
+        let points = "{{results.points}}";
+        let accuracy = "{{results.accuracy}}";
+        let percentage = (points / ("{{results.quizLength}}" * 100)) * 100;
     </script>
+    <script src="{% static 'quizApp/ResultsJS/resultsAnimation.js' %}"></script>
+    <script src="{% static 'quizApp/ResultsJS/result.js' %}"></script>
 </body>
 </html>
