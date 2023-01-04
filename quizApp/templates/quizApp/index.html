@@ -12,60 +12,46 @@
     <title>Quiz</title>
 </head>
 <body>
-    
     <form action="{% url 'questionPage'  %}" method="post" class="container">
         {% csrf_token %}
+        <!-- <p class="section-heading">Categories</p> -->
+        <input type="text" name="categories" id="categories" class="">
+        <input type="text" id="difficulty" name="difficulty" value="test">
+        <input type="text" id="length" name="length" value="test">
 
-        <p class="section-heading" id="categories" name="categories">Categories</p>
-
-        <div class="bigger-box box-color" value="all" id="all" onclick="select(event)">All Categories</div>
+        <div id="categoryDiv">
+            <h1>Categories</h1>
+            <div class="bigger-box box-color" value="all" id="all" onclick="select(event)">All Categories</div>
             <div class="box box-color" value="arts_and_literature" id="arts_and_literature" onclick="select(event)">Arts and Literature</div>
             <div class="box box-color" value="film_and_tv" id="film_and_tv" onclick="select(event)">Film and TV</div>
-            <div class="box box-color" value="food_and_drink" id="foodq_and_drink" onclick="select(event)">Food and Drink</div>
+            <div class="box box-color" value="food_and_drink" id="food_and_drink" onclick="select(event)">Food and Drink</div>
             <div class="box box-color" value="general_knowledge" id="general_knowledge" onclick="select(event)">General Knowledge</div>
             <div class="box box-color" value="geography" id="geography" onclick="select(event)">Geography</div>
-            <div class="box box-color" value="history" id="history" onclick="select(event)">Food and Drink</div>
+            <div class="box box-color" value="history" id="history" onclick="select(event)">History</div>
             <div class="box box-color" value="music" id="music" onclick="select(event)">Music</div>
             <div class="box box-color" value="science" id="science" onclick="select(event)">Science</div>
             <div class="box box-color" value="society_and_culture" id="society_and_culture" onclick="select(event)">Society and Culture</div>
             <div class="box box-color" value="sport_and_leisure" id="sport_and_leisure" onclick="select(event)">Sport and Leisure</div>
+        </div>
 
+        <div id="difficultyDiv" >
+            <h1>Difficulty</h1>
+            <div value="easy" id="easy" onclick="select(event)">Easy</div>
+            <div value="medium" id="medium" onclick="select(event)">Medium</div>
+            <div value="hard" id="hard" onclick="select(event)">Hard</div>
+        </div>
 
+        <div id="lengthDiv">
+            <h1>Quiz Length</h1>
+            <div value="5" id="5" onclick="select(event)">5</div>
+            <div value="7" id="7" onclick="select(event)">7</div>
+            <div value="10" id="10" onclick="select(event)">10</div>
+        </div>
 
-
-        <!-- <p>Categories</p>
-        <select id="categories" name="categories">
-            <option value="all" id="all">All Categories</option>   
-            <option value="arts_and_literature" id="arts_and_literature">Art and Literature</option>
-            <option value="film_and_tv" id="film_and_tv">Film and TV</option>
-            <option value="food_and_drink" id="food_and_drink">Food and Drink</option>
-            <option value="general_knowledge" id="general_knowledge">General Knowledge</option>
-            <option value="geography" id="geography">Geography</option>
-            <option value="history" id="history">History</option>
-            <option value="music" id="music">Music</option>
-            <option value="science" id="science">Science</option>
-            <option value="society_and_culture" id="society_and_culture">Society and Culture</option>
-            <option value="sport_and_leisure" id="sport_and_leisure">Sport and Leisure</option>   
-        </select> -->
-
-        <p>Difficulty</p>
-        <select id="difficulty" name="difficulty">
-            <option value="easy" id="easy">Easy</option>
-            <option value="medium" id="medium">Medium</option>
-            <option value="hard" id="hard">Hard</option>
-        </select>
-
-        <p>Quiz Length</p>
-        <select id="length" name="length">
-            <option value="5" id="5">5</option>
-            <option value="7" id="7">7</option>
-            <option value="10" id="10">10</option>
-        </select>
-
-        <div id="nextButton" class="button">
+        <div id="nextButton" class="button" onclick="next(event)">
             <p id="nextButtonText">Next</p>
         </div>
-        <input class="button" type="submit" value="Submit" style="width: 100px; height: 50px; padding: 20px" id="begin">
+        <input class="button" type="submit" value="Submit" style="width: 100px; height: 50px; padding: 20px" id="begin" onclick="submit(event)">
     </form>
         
     
@@ -73,22 +59,26 @@
         let themeBlue = "#4062F6";
         let themeGrey = '#434861';
         let selected; // selected represents the id of the selected answer
-        let triviaData = [];
-
+        let currentPage = 0;
+        let sections = ["categories", "difficulty", "length"]
+        console.log("the page loaded");
 
         function select(event){  
-                    // If there was a previously selected element then it is deselected   
-                    if(selected !== undefined){
-                        document.getElementById(selected).style.backgroundColor = themeGrey;
-                    }
-                    selected = event.target.id; // current event target is set as the selected element
-                    event.currentTarget.style.backgroundColor = themeBlue;    
-                    nextButton.style.backgroundColor = themeBlue;
-                }
+            if(selected !== undefined){
+                document.getElementById(selected).style.backgroundColor = themeGrey;
+            }
+            selected = event.target.id; 
+            event.currentTarget.style.backgroundColor = themeBlue;    
+            document.getElementById(sections[currentPage]).value = selected;
+            // nextButton.style.backgroundColor = themeBlue;
+        }
 
-
+        function next(event){
+            if(currentPage <= 2){
+                currentPage++;
+            }
+        }
 
     </script>
-    <!-- <script src="{% static 'quizApp/index.js' %}"></script> -->
 </body>
 </html>
