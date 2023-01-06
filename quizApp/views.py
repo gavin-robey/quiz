@@ -7,9 +7,9 @@ def index(request):
 
 def questionPage(request):
     data = request.POST
-    print(data)
     selection = {
         "category": data.get('categories'),
+        "categoryName": data.get('categoryName'),
         "difficulty": data.get('difficulty'),
         "quizLength": data.get('length'),
     }

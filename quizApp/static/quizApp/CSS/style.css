@@ -8,10 +8,10 @@ body{
 
 #navBar{
 	padding: 10px;
-}#questionNumberContainer{
+}#questionNumberText{
 	text-align: center;
-	width: 200px;
 	margin-left: 50px;
+	width: fit-content;
 }
 
 .answerContainer{
@@ -28,15 +28,16 @@ body{
 }
 
 .option{
-	box-shadow: 0 12px 24px -20px #000;
+	border: 5px solid #313445;
 	padding: 20px 0;
-	height: 30px;
+	height: 25px;
 	margin: auto;
 	margin-top: 25px;
 	background-color: #434861;
 	border-radius: 10px;
 }.option:hover{
-	background-color: #4062F6;
+	border: 5px solid #4062F6;
+    box-shadow: 0 12px 24px -20px #4062F6;
 }
 
 .container{
@@ -47,6 +48,7 @@ body{
 
 #homeButton{
 	float: left;
+	margin-left: 5px;
 	box-shadow: 0 12px 24px -20px #000;
 }#homeButton:hover{
 	background-color: #4062F6;
@@ -63,6 +65,7 @@ body{
 }#nextButton{
 	box-shadow: 0 12px 24px -20px #000;
 	float: right;
+	margin-right: 5px;
 }
 
 circle{
@@ -223,33 +226,3 @@ circle{
   	}
 }
 
-
-
-/*Braxtons css --subject to change */
-.section-heading {
-	text-align:center;
-	color:#102C4E;
-	margin-top: 150px;
-	margin-bottom:70px;
-	font-size: 35px;
-  }
-
-  .bigger-box {
-	float: left;
-	width: 82%;
-	padding: 10px;
-	margin:20px;
-	height: 100px;
-  }
-
-  .box {
-	float: left;
-	width: 12%;
-	padding: 10px;
-	margin:20px;
-	height: 100px;
-  }
-
-  .box-color {
-	background-color:#112d4e;
-  }

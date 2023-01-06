@@ -44,6 +44,10 @@ function setAnswer(isLastQuestion){
     }
 }
 
+function goHome(event){
+    location.replace('/');
+}
+
 /**
  * verifies whether the current answer is correct
  * Updates count UI 

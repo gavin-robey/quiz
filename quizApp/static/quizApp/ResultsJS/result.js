@@ -54,6 +54,10 @@ function hideButtons(index){
     }
 }
 
+function goHome(event){
+    location.replace('/');
+}
+
 /**
  * Finds every answer that is incorrect, then sets the border to be red
  * Otherwise, the outline will be green

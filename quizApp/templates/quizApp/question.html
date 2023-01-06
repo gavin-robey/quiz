@@ -9,7 +9,7 @@
     <title>Question 1</title>
 </head>
 <body>  
-    <div id="navBar"><div id="questionNumberContainer"><h1 id="questionNumber">Question 1</h1></div></div>
+    <div id="navBar"><h1 id="questionNumberText">{{categoryName}}, Question: <span id="questionNumber">1</span> / {{quizLength}}</h1></div>
     <div id="progressBars">
         <div class="container" id="timer">
             <h2>Time Remaining</h2>
@@ -57,7 +57,7 @@
         <strong><p class="option" id="option3" onclick="select(event)">Loading...</p></strong>
         <strong><p class="option" id="option2" onclick="select(event)">Loading...</p></strong>
         <strong><p class="option" id="option4" onclick="select(event)">Loading...</p></strong>
-        <div id="homeButton" onclick="history.back()" class="button">
+        <div id="homeButton" onclick="goHome(event)" class="button">
             <strong><p>Home</p></strong>
         </div>
         <div id="nextButton" class="button">

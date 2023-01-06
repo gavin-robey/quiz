@@ -48,7 +48,7 @@ function quizLoop(){
  * Then loads the next quiz question and updates the main counter
  */
 function quizCounter(){
-    document.getElementById('questionNumber').textContent = `Question ${++questionNumber}`;
+    document.getElementById('questionNumber').textContent = ++questionNumber;
     document.getElementsByTagName('title').textContent = `Question ${questionNumber}`;
     isCorrect(); // in helper.js 
     setAnswer(false); // in helper.js
